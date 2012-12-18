@@ -19,21 +19,54 @@ class MenuController extends Controller
 
    public function submenu($pageId) {
 
-      $page = ORM::for_table('b_pages')->select('parent')->select('name_url')->where('id', $pageId)->find_one();
+      //$page = ORM::for_table('b_pages')->select('parent')->select('name_url')->where('id', $pageId)->find_one();
       
-      $url = $this->build_url($page->name_url, $page->parent);
+      //$url = $this->build_url($page->name_url, $page->parent);
    
-      $pages = ORM::for_table('b_pages')->select('name_url')->select('name_menu')->select('parent')->where('parent', $pageId)->where('is_visible', 1)->order_by_asc('number')->find_many();
+      $pages = ORM::for_table('b_pages')->select('name_url')->select('name_menu')->select('parent')->select('url')->where('parent', $pageId)->where('is_visible', 1)->order_by_asc('number')->find_many();
 
       foreach($pages as $page) {
-         $page->name_url = $url.'/'.$page->name_url;
+         //$page->name_url = $url.'/'.$page->name_url;
+         $page->name_url = $page->url;
       }
       
       return $pages;
    }
 
+   public function generateUrls() {
+
+      $pages = ORM::for_table('b_pages')->select('id')->select('name_url')->select('parent')->find_many();
+      
+      foreach($pages as $page) {
+         
+         if($page->id > 0) {
+            $page->url = '/'.$this->build_url($page->name_url, $page->parent);
+            $page->save();
+            echo $page->name_url . ' &rarr; ' . $page->url . '<br />';
+         }
+      }
+
+   }   
+
+   public function build($level = NULL)
+   {
+           $level_id = empty($level) ? 0 : $level->id;
+           
+           $level = $this->where('parent', $level_id)->orderby('id', 'asc')->find_all();
+           
+           $menu = new menu;
+           
+           foreach ($level as $lvl)
+           {
+                   $menu->add($lvl->title, $lvl->url, $this->build($lvl));
+           }
+           
+           return $menu;
+   }
+		
+   
    // Build URL path for a page
-   function build_url($page_url, $page_parent){
+   private function build_url($page_url, $page_parent){
 
       $pages_url[0] = $page_url;
       $n=1;

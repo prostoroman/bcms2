@@ -27,7 +27,12 @@ class PageController extends Controller
 
       $parent = 0;
       $maxLevel = count($parts);
-    
+      
+      $url = implode('/', $parts);
+      
+      $itemPage = Model::factory('Page')->where('url', $url)->find_one();
+      
+      /*
       for($i = 0; $i < $maxLevel; $i++) {
          
          if($i == 0) {
@@ -42,6 +47,7 @@ class PageController extends Controller
          if(!is_object($itemPage)) break;
          
       }
+      */
       
       return $itemPage;
    

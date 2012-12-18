@@ -29,6 +29,7 @@ $app->run();
 
 $time_end = microtime(true);
 $execution_time = ($time_end - $time_start)/60; //dividing with 60 will give the execution time in minutes other wise seconds
-echo '<b>Total Execution Time:</b> '.$execution_time.' Mins'; //execution time of the script
+echo '<b>Total Execution Time:</b> '.$execution_time.' Mins<br />'; //execution time of the script
+echo '<b>Page Creation Time:</b> '.date('H:i:s e').'<br/><br/>'; //execution time of the script
 
 ?>
