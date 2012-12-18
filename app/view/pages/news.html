@@ -1,0 +1,31 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div class="col_12" id="pageContent">
+
+        {% if breadCrumbs|length > 1 %}
+            <ul class="breadcrumbs">
+                {% for b in breadCrumbs %}
+                    {% if loop.last %}<li><a href="{{ b.url }}">{{ b.name }}</a></li>
+                    {% else %}
+                    <li><a href="{{ b.url }}">{{ b.name }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        <div class="dp75">
+            <h1>{{ name_page }}</h1>
+            {{ html|raw }}
+        </div>
+
+        <div class="dp25" style="margin-right:-15px;">
+
+            ANNOUNCE-OUT
+            
+        </div>
+
+
+    
+</div>
+{% endblock %}

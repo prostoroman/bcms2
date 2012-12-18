@@ -1,0 +1,16 @@
+{% extends "layout.html.twig" %}
+
+
+{% block content %}
+
+    <h1>{{ page.name_page }}</h1>
+
+    <ul class="menu2">
+        {% for m in bcms.MenuController.submenu(page.id) %}
+            <li><a href="{{ bcms.app.urlFor('home') }}{{ m.name_url }}">{{ m.name_menu }}</a></li>
+        {% endfor %}
+    </ul>
+
+{{ page.html | raw }}
+
+{% endblock %}

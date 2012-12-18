@@ -1,0 +1,16 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+    {{ html|raw }}
+
+    {% if user.signed %}
+
+    <h2>Вы уже зарегистрированы, {{ user.data.username }}!</h2><br /><br />
+    <p><a href="?logout=1">Выйти?</a></p>
+
+    {% else %}
+	    {% include 'user/register-form.html' %}
+    {% endif %}
+
+{% endblock %}

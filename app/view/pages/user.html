@@ -1,0 +1,24 @@
+{% extends 'mainTemplate.html' %}
+
+{% block content %}
+
+    {% if user.signed %}
+
+		<h2>Добро пожаловать, {{ user.data.username }}!</h2>
+
+		<p>{{ user.data.first_name }} {{ user.data.last_name }}</p>
+		<p>{{ user.data.phone }} <a href="{{ user.data.email }}">{{ user.data.email }}</a></p>
+		<p><b>{{ user.data.company|raw }}</b></a><br />
+		{{ user.data.aboutcompany }}</p>
+		{% if user.data.website %}<a href="{{ user.data.website }}">{{ user.data.website }}</a>{% endif %}
+
+    {% else %}
+	
+		<h1>Вход в систему</h1>
+		{% include 'user/login-form.html' %}
+		
+    {% endif %}
+
+	{{ html|raw }}
+	
+{% endblock %}

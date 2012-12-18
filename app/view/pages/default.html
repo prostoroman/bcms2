@@ -1,0 +1,54 @@
+{% extends "layout.html.twig" %}
+
+{% block gallery %}	    
+
+<div id="slideshow" class="rs-slideshow">
+	<div class="slide-container">
+		<img src="/files/slides/IMG_2582.jpg" />
+		<span class="slide-caption">Описание первого слайда</span>
+	</div>
+	<ol class="slides">
+		<li><a href="/files/slides/IMG_2822.jpg" title="">Второй слайд</a></li>
+		<li><a href="/files/slides/IMG_2850.jpg" title=""></a></li>
+		<li><a href="/files/slides/IMG_2871.jpg" title=""></a></li>
+		<li><a href="/files/slides/IMG_2877.jpg" title="Это четвертый слайд">Это четвертый слайд</a></li>
+		<li><a href="/files/slides/IMG_7622.jpg" title=""></a></li>
+		<li><a href="/files/slides/IMG_7659.jpg" title=""></a></li>		
+	</ol>
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+<div id="pageContent" class="clearfix">
+
+        <div class="dp80">
+            <div style="padding: 0 20px 0 10px">
+            {% if breadCrumbs|length > 1 %}
+                <ul class="breadcrumbs">
+                    {% for b in breadCrumbs %}
+                        {% if loop.last %}<li><a href="{{ b.url }}">{{ b.name }}</a></li>
+                        {% else %}
+                        <li><a href="{{ b.url }}">{{ b.name }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+    
+                <h1>{{ name_page }}</h1>
+                {{ html|raw }}
+            </div>
+        </div>
+
+        <div class="dp20">
+            
+                {SYS-MENU-2}
+            
+            
+        </div>
+
+
+    
+</div>
+{% endblock %}

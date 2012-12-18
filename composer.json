@@ -1,0 +1,15 @@
+{
+   "require": {
+        "slim/slim": "2.*",
+        "slim/extras": "2.*",
+        "twig/twig": "1.*",
+        "pimple/pimple": "*",
+        "j4mie/paris": "dev-master",
+        "opauth/opauth": "*",
+        "opauth/facebook": "*",
+        "opauth/google": "*",
+        "opauth/twitter": "*",
+        "kherge/bcrypt": "2.*"
+   },
+   "minimum-stability": "dev"
+}
