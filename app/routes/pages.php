@@ -8,12 +8,6 @@ $app->get("/private", $authenticate($app), function () use ($app) {
    //$app->pass();
 });
 
-$app->get('/generateUrls', function () use ($bcms) {
-        
-    $bcms['MenuController']->generateUrls();
-    
-});
-
 $app->get('(:parts+)', function ($parts) use ($bcms) {
         
     $bcms['page'] = $bcms['PageController']->find($parts);

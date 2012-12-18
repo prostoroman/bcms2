@@ -10,9 +10,9 @@ class MenuController extends Controller
    public function menu1() {
 
       $homepage = ORM::for_table('b_pages')->select('id')->select('name_url')->select('name_menu')->where('parent', 0)->where('name_url', '')->find_one();
-      $menu1 = ORM::for_table('b_pages')->select('id')->select('name_url')->select('name_menu')->where('parent', $homepage->id)->where('is_visible', 1)->order_by_asc('number')->find_many();
+      $menu1 = ORM::for_table('b_pages')->select('id')->select('name_url')->select('name_menu')->where('parent', $homepage->id)->where('is_visible', 1)->order_by_asc('order')->find_many();
 
-      //$menu1 = ORM::for_table('b_pages')->raw_query("SELECT `id`, `name_url`, `name_menu` FROM `b_pages` WHERE `parent` = (SELECT `id` FROM `b_pages` WHERE `parent` = '0' AND `name_url` = '' LIMIT 1) AND `is_visible` = '1' ORDER BY `number` ASC")->find_many();
+      //$menu1 = ORM::for_table('b_pages')->raw_query("SELECT `id`, `name_url`, `name_menu` FROM `b_pages` WHERE `parent` = (SELECT `id` FROM `b_pages` WHERE `parent` = '0' AND `name_url` = '' LIMIT 1) AND `is_visible` = '1' ORDER BY `order` ASC")->find_many();
       
       return $menu1;
    }
@@ -23,7 +23,7 @@ class MenuController extends Controller
       
       //$url = $this->build_url($page->name_url, $page->parent);
    
-      $pages = ORM::for_table('b_pages')->select('name_url')->select('name_menu')->select('parent')->select('url')->where('parent', $pageId)->where('is_visible', 1)->order_by_asc('number')->find_many();
+      $pages = ORM::for_table('b_pages')->select('name_url')->select('name_menu')->select('parent')->select('url')->where('parent', $pageId)->where('is_visible', 1)->order_by_asc('order')->find_many();
 
       foreach($pages as $page) {
          //$page->name_url = $url.'/'.$page->name_url;
@@ -47,23 +47,6 @@ class MenuController extends Controller
       }
 
    }   
-
-   public function build($level = NULL)
-   {
-           $level_id = empty($level) ? 0 : $level->id;
-           
-           $level = $this->where('parent', $level_id)->orderby('id', 'asc')->find_all();
-           
-           $menu = new menu;
-           
-           foreach ($level as $lvl)
-           {
-                   $menu->add($lvl->title, $lvl->url, $this->build($lvl));
-           }
-           
-           return $menu;
-   }
-		
    
    // Build URL path for a page
    private function build_url($page_url, $page_parent){
