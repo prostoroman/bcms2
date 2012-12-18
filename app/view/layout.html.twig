@@ -3,14 +3,13 @@
 <title>{{ page.name_title }}</title>
 <meta charset="UTF-8">
 <meta name="description" content="" />
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-<script type="text/javascript" src="{{ rootUri }}/js/prettify.js"></script>                                   <!-- PRETTIFY -->
-<script type="text/javascript" src="{{ rootUri }}/js/kickstart.js"></script>                                  <!-- KICKSTART -->
-<link rel="stylesheet" type="text/css" href="{{ rootUri }}/css/kickstart.css" media="all" />                  <!-- KICKSTART -->
-<link rel="stylesheet" type="text/css" href="{{ rootUri }}/css/style.css" media="all" />                          <!-- CUSTOM STYLES -->
-</head><body><a id="top-of-page"></a><div id="wrap" class="clearfix">
-<!-- ===================================== END HEADER ===================================== -->
+<script type="text/javascript" src="{{ rootUri }}/quickconcat.php?files=js/jquery.min.js,js/prettify.js,js/kickstart.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ rootUri }}/quickconcat.php?files=css/kickstart-buttons.css,css/kickstart-forms.css,css/kickstart-menus.css,css/kickstart-grid.css,css/kickstart-icons.css,css/jquery.fancybox-1.3.4.css,css/prettify.css,css/chosen.css,css/tiptip.css,css/kickstart.css,css/style.css" media="all" />
+
+</head>
+    <body>
+	<a id="top-of-page"></a>
+	<div id="wrap" class="clearfix">
 
 	{% block menu %}
 		<ul class="menu">
