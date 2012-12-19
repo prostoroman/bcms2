@@ -2,7 +2,8 @@
 
 class MenuController extends Controller
 {
-  
+   public $mTree = array();
+   
    public function init(Pimple $di) {
       
    }
@@ -18,21 +19,51 @@ class MenuController extends Controller
    }
 
    public function submenu($pageId) {
-
-      //$page = ORM::for_table('b_pages')->select('parent')->select('name_url')->where('id', $pageId)->find_one();
       
-      //$url = $this->build_url($page->name_url, $page->parent);
-   
       $pages = ORM::for_table('b_pages')->select('name_url')->select('name_menu')->select('parent')->select('url')->where('parent', $pageId)->where('is_visible', 1)->order_by_asc('order')->find_many();
 
-      foreach($pages as $page) {
-         //$page->name_url = $url.'/'.$page->name_url;
+      foreach($pages as $page)
+      {
          $page->name_url = $page->url;
       }
       
       return $pages;
    }
 
+   public function menuTree($out = '', $parent = 0, $level = 0)
+   {
+      $level++;
+
+      $pages = ORM::for_table('b_pages')
+               ->select('id')
+               ->select('name_menu')
+               ->select('url')
+               ->where('parent', $parent)
+               ->where('is_visible', 1)
+               ->order_by_asc('order')
+               ->find_many();
+      
+      if(!$out)
+      {
+         $out = '<ul class="menu">'.PHP_EOL;
+      }
+      else if(!empty($pages))
+      {
+         $out .= '<ul class="'. $level . '">'.PHP_EOL;
+      }
+      
+      foreach ($pages as $page)  
+      {  
+         $out .= '<li class="level'.$level.'"><a href="' . $page->url . '">' . $page->name_menu . '</a>'.PHP_EOL;
+         $out = $page->id > 0 ? $this->menuTree($out, $page->id, $level) : $out;
+         $out .= '</li>'.PHP_EOL;
+      }
+      
+      $out .= !empty($pages) ? '</ul>'.PHP_EOL : '';
+
+      return $out;
+   }
+      
    public function generateUrls() {
 
       $pages = ORM::for_table('b_pages')->select('id')->select('name_url')->select('parent')->find_many();

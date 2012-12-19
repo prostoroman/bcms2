@@ -13,4 +13,11 @@
 
 {{ page.content | raw }}
 
+		<ul>
+		    {% for m in bcms.MenuController.menu1 %}
+			<li><a href="{{ bcms.app.urlFor('home') }}{{ m.name_url }}">{{ m.name_menu }}</a></li>
+		    {% endfor %}
+		</ul>
+    <date>{{ page.date_created }}</date><br />
+    <date>{{ page.date_changed }}</date>
 {% endblock %}

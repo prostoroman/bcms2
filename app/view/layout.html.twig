@@ -12,11 +12,7 @@
 	<div id="wrap" class="clearfix">
 
 	{% block menu %}
-		<ul class="menu">
-		    {% for m in bcms.MenuController.menu1 %}
-			<li><a href="{{ bcms.app.urlFor('home') }}{{ m.name_url }}">{{ m.name_menu }}</a></li>
-		    {% endfor %}
-		</ul>		
+	    {{ bcms.MenuController.menuTree | raw }}		
 	{% endblock %}
 	 
 <div class="col_12">

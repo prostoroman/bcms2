@@ -16,8 +16,8 @@ $app->get('(:parts+)', function ($parts) use ($bcms) {
         $bcms['app']->notFound();
     }
     
-    # HTTP cache
-    //$bcms['app']->lastModified(1355857675); // or $app->etag('unique-id');
+    // HTTP cache
+    //$bcms['app']->lastModified(strtotime($bcms['page']->date_changed)); // or $app->etag('unique-id');
     //$bcms['app']->expires('+1 week');
     
     $template = $bcms['page']->template ? $bcms['page']->template : 'default.twig';
