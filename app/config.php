@@ -11,6 +11,8 @@ ORM::configure('caching', true);
 $bcms = new Pimple();
 
 $bcms['slim.config'] = array(
+    'mode' => 'development', // 'mode' => 'production',
+    'debug' => 'true', // 'mode' => 'production',
     'templates.path' => '../app/view',
     'log.level' => 4,
     'log.enabled' => true,

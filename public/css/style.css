@@ -29,6 +29,8 @@ input[type="button"]{
 font-family: "Trebuchet Ms", arial, verdana, sans-serif;
 }
 
+a.active {color:red;}
+
 .menu{
 font-family: "Trebuchet Ms", arial, verdana, sans-serif;
 }

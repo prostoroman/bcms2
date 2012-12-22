@@ -1,4 +1,17 @@
 <?php
+
+$app->get('/generateUrls', function () use ($bcms) {
+        
+    $bcms['MenuController']->generateUrls();
+    
+});
+
+$app->get('/has_childs', function () use ($bcms) {
+        
+    $bcms['MenuController']->hasChilds();
+    
+});
+
 $app->get('/', function () use ($app) {
     $app->pass();
 })->name('home');
@@ -15,6 +28,8 @@ $app->get('(:parts+)', function ($parts) use ($bcms) {
     if(!$bcms['page']) {
         $bcms['app']->notFound();
     }
+    
+    //$bcms['MenuController']->menu(2);
     
     // HTTP cache
     //$bcms['app']->lastModified(strtotime($bcms['page']->date_changed)); // or $app->etag('unique-id');
