@@ -1,0 +1,10 @@
+{% for link in links %}
+    <li{% if link.active %} class="current"{% endif %}>
+        <a href="{{ link.url }}">{{ link.name_menu }}</a>
+        {% if link.childs %}
+            <ul>
+                {% include "menu-links.twig" with {'links': link.childs} %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %}

@@ -29,7 +29,8 @@ $app->get('(:parts+)', function ($parts) use ($bcms) {
         $bcms['app']->notFound();
     }
     
-    //$bcms['MenuController']->menu(2);
+    $pages = $bcms['MenuController']->menuTree();
+    //print_r($pages);
     
     // HTTP cache
     //$bcms['app']->lastModified(strtotime($bcms['page']->date_changed)); // or $app->etag('unique-id');

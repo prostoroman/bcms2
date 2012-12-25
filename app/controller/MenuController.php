@@ -94,7 +94,7 @@ class MenuController extends Controller
       return $pages;
    }
 
-   public function menuTree($out = '', $parent = 0, $level = 0)
+   public function menuTreeHTML($out = '', $parent = 0, $level = 0)
    {
       $level++;
 
@@ -140,6 +140,46 @@ class MenuController extends Controller
       $out .= !empty($pages) ? '</ul>'.PHP_EOL : '';
 
       return $out;
+   }
+
+   public function menuTree($parent = 0, $level = 0)
+   {
+      $level++;
+
+      $request = $this->app->request();
+      $url = $request->getResourceUri();
+      
+      $pagesORM = ORM::for_table('b_pages')
+               ->select('id')
+               ->select('name_menu')
+               ->select('url')
+               ->select('has_childs')
+               ->where('parent', $parent)
+               ->where('is_visible', 1)
+               ->order_by_asc('order')
+               ->find_many();
+      
+      foreach($pagesORM as $page) {
+         $pages[] = $page->as_array();
+      }
+      
+      $countPages = count($pages);
+      
+      for ($i=0; $i < $countPages; $i++)  
+      {
+         $isActive = '';
+         
+         if($pages[$i]['url'] == '/' && $url == '/') $pages[$i]['active'] = TRUE;
+         if($pages[$i]['url'] !== '/' && strpos($url, $pages[$i]['url']) !== false) $pages[$i]['active'] = TRUE;
+         
+         if($pages[$i]['id'] > 0 && $pages[$i]['has_childs'])
+         {
+            $pages[$i]['childs'] = $this->menuTree($pages[$i]['id'], $level);
+         }
+         
+      }
+      
+      return $pages;
    }
       
    public function generateUrls() {

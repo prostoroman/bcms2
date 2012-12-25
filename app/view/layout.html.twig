@@ -12,12 +12,17 @@
 	<div id="wrap" class="clearfix">
 
 	{% block menu %}
-	    {{ bcms.MenuController.menuTree | raw }}		
+	    
+	    <ul class="menu">
+		{% include "menu-links.twig" with {'links':bcms.MenuController.menuTree()} only %}
+	    </ul>	    
+	    
 	{% endblock %}
 	 
 <div class="col_12">
 	<div class="col_9">
 
+	
             {% block content %}
             {% endblock %}
 
