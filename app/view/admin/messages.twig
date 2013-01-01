@@ -1,0 +1,6 @@
+{% if flash.success or  flash.error or  flash.info %}
+<div class="alert{% if flash.success %} alert-success{% elseif flash.error %} alert-error{% elseif flash.info %} alert-info{% endif %}">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ flash.error }}{{ flash.success }}{{ flash.info }}
+</div>
+{% endif %}

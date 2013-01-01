@@ -6,22 +6,22 @@
 
 {% block content %}
 
-    <div class="row-fluid">
-	<div class="span9">
-	    <h1>Edit page <small>"{{ bcms.page.name_menu }}"</small></h1>
-	</div>
-	<div class="span3">
-	    <a href="/admin/pages/add" class="btn btn-large btn-block btn-primary"><i class="icon-plus icon-white"></i> Add new page</a>
-	</div>
+<div class="row-fluid">
+    <div class="span9">
+	<h1>{% if bcms.page %}Edit page <small>"{{ bcms.page.name_menu }}"{% else %}Add new page{% endif %}</small></h1>
     </div>
-    <div class="row-fluid">
-	<div class="span9">
-	    <ul class="breadcrumb">
-		<li><a href="/admin">Home</a> <span class="divider">/</span></li>
-		<li><a href="/admin/pages">Pages</a> <span class="divider">/</span></li>
-		<li class="active">Edit page</li>
-	    </ul>
-    <form class="form-horizontal" action="" method="POST">
+    <div class="span3">
+	<a href="/admin/pages/add" class="btn btn-large btn-primary"><i class="icon-plus icon-white"></i> Add new page</a>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span9">
+	<ul class="breadcrumb">
+	    <li><a href="/admin">Admin</a> <span class="divider">/</span></li>
+	    <li><a href="/admin/pages">Pages</a> <span class="divider">/</span></li>
+	    <li class="active">{% if bcms.page %}Edit page "{{ bcms.page.name_menu }}"{% else %}Add new page{% endif %}</li>
+	</ul>
+	<form class="form-horizontal" action="" method="POST">
 	<div class="control-group">
 	    <label class="control-label">parent</label>
 	    <div class="controls">
@@ -48,7 +48,7 @@
 	<div class="control-group">
 	    <label class="control-label">Text</label>
 	    <div class="controls">
-		<textarea class="span12" name="content" rows="8">{{ bcms.page.content }}</textarea>
+		<textarea class="span12" name="content" rows="10">{{ bcms.page.content }}</textarea>
 	    </div>
 	</div>
 	<div class="control-group">
@@ -56,14 +56,12 @@
 	    <div class="controls">
 		<select name="template">
 		    <option value=""{% if bcms.page.template ==  '' %} selected="selected"{% endif %}>Default</option>
-
 		    {% for template in bcms.templates %}
 			<option value="{{ template }}"{% if bcms.page.template ==  template %} selected="selected"{% endif %}>{{ template }}</option>
 		    {% endfor %}		    
 		</select>		
 	    </div>
 	</div>
-
 	<div class="control-group">
 	    <label class="control-label">name_title</label>
 	    <div class="controls">
@@ -83,18 +81,37 @@
 		<span class="help-block">Page will automatically redirect to this url</span>
 	    </div>
 	</div>
-
-	<div class="form-actions">
-	    <button type="submit" class="btn btn-primary">Save and return to list</button>	    
-	    <button type="submit" class="btn">Save</button>
-	    <button type="button" class="btn">Cancel</button>
-	    <button type="button" class="btn btn-danger pull-right">Delete</button>
-	</div>	
-</form>
+	<div class="control-group">
+	    <label class="control-label">order</label>
+	    <div class="controls">
+		<input type="text" class="span1" name="order" value = "{{ bcms.page.order }}" placeholder="order">
+	    </div>
 	</div>
-	<div class="span3">
-	    <ul>
-		{% include "admin/page-links.twig" with {'links':bcms.MenuController.menuTree('all')} only %}
-	    </ul>
-	</div>    
+	<div class="form-actions">
+	    <button type="submit" class="btn btn-primary">Save</button>
+	    <a class="btn" href="/admin/pages">Cancel</button>
+	    
+	    <!-- Button to trigger modal -->
+	    <a href="#deleteModal" role="button" class="btn btn-danger pull-right" data-toggle="modal">Delete</a>
+	     
+	    <!-- Modal -->
+	    <div id="deleteModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    <h3 id="myModalLabel">Delete page <small>"{{ bcms.page.name_menu }}"</small>?</h3>
+		</div>
+		<div class="modal-body">
+		    <p>You will not be abble to undo this action.</p>
+		</div>
+		<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+		<a href="/admin/pages/delete/{{ bcms.page.id }}" class="btn btn-danger">Delete</a>
+		</div>
+	    </div>	    
+	</div>	
+	</form>
+    </div>
+    <div class="span3">
+    </div>
+</div>
 {% endblock %}

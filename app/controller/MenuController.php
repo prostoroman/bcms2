@@ -135,22 +135,38 @@ class MenuController extends Controller
       return $out;
    }
 
-   public function menuTree($parent = 0, $level = 0)
+   public function menuTree($parent = 0, $level = 0, $only_visible = 0)
    {
       $level++;
 
       $request = $this->app->request();
       $url = $request->getResourceUri();
       
-      $pagesORM = ORM::for_table('b_pages')
-               ->select('id')
-               ->select('name_menu')
-               ->select('url')
-               ->select('has_childs')
-               ->where('parent', $parent)
-               //->where('is_visible', 1)
-               ->order_by_asc('order')
-               ->find_many();
+      if($only_visible)
+      {
+         $pagesORM = ORM::for_table('b_pages')
+                  ->select('id')
+                  ->select('name_menu')
+                  ->select('url')
+                  ->select('has_childs')
+                  ->where('parent', $parent)
+                  ->where('is_visible', 1)
+                  ->order_by_asc('order')
+                  ->find_many();
+      }
+      else
+      {
+         $pagesORM = ORM::for_table('b_pages')
+                  ->select('id')
+                  ->select('name_menu')
+                  ->select('url')
+                  ->select('has_childs')
+                  ->where('parent', $parent)
+                  //->where('is_visible', 1)
+                  ->order_by_asc('order')
+                  ->find_many();
+      }
+      
       
       foreach($pagesORM as $page) {
          $pages[] = $page->as_array();
@@ -185,7 +201,7 @@ class MenuController extends Controller
          {
             $page->url = '/'.$this->build_url($page->name_url, $page->parent);
             $page->save();
-            echo $page->name_url . ' &rarr; ' . $page->url . '<br />';
+            //echo $page->name_url . ' &rarr; ' . $page->url . '<br />';
          }
       }
 

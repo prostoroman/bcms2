@@ -14,7 +14,7 @@
 	{% block menu %}
 	    
 	    <ul class="menu">
-		{% include "menu-links.twig" with {'links':bcms.MenuController.menuTree()} only %}
+		{% include "menu-links.twig" with {'links':bcms.MenuController.menuTree(0, 0, 1)} only %}
 	    </ul>	    
 	    
 	{% endblock %}
