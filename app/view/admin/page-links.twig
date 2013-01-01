@@ -1,0 +1,10 @@
+{% for link in links %}
+    <li{% if link.active %} class="current"{% endif %}>
+        <a href="/admin/pages/edit/{{ link.id }}">{{ link.name_menu }}</a>
+        {% if link.childs %}
+            <ul>
+                {% include "admin/page-links.twig" with {'links': link.childs} %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %}

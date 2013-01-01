@@ -1,0 +1,21 @@
+{% extends "admin/layout.html.twig" %}
+
+{% block sidebar %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="row-fluid">
+	<div class="span9">
+	    <h1>Pages <small>Manage pages list</small></h1>
+	</div>
+	<div class="span3">
+	    <a href="/admin/pages/add" class="btn btn-large btn-block btn-primary"><i class="icon-plus icon-white"></i> Add new page</a>
+	</div>
+    </div>
+	<hr>
+
+    <ul>
+	{% include "admin/page-links.twig" with {'links':bcms.MenuController.menuTree('all')} only %}
+    </ul>	    
+{% endblock %}

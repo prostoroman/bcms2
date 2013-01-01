@@ -23,7 +23,7 @@ class PageController extends Controller
    * @return object
    */   
    
-   public function find($parts) {
+   public function findByUrl($parts) {
 
       $parent = 0;
       $maxLevel = count($parts);
@@ -52,4 +52,12 @@ class PageController extends Controller
       return $itemPage;
    
    }
+
+   public function findById($id)
+   {
+      $page = Model::factory('Page')->where('id', $id)->find_one();
+            
+      return $page;
+   }
+   
 }

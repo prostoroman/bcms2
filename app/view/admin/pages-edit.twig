@@ -1,0 +1,100 @@
+{% extends "admin/layout.html.twig" %}
+
+{% block sidebar %}
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="row-fluid">
+	<div class="span9">
+	    <h1>Edit page <small>"{{ bcms.page.name_menu }}"</small></h1>
+	</div>
+	<div class="span3">
+	    <a href="/admin/pages/add" class="btn btn-large btn-block btn-primary"><i class="icon-plus icon-white"></i> Add new page</a>
+	</div>
+    </div>
+    <div class="row-fluid">
+	<div class="span9">
+	    <ul class="breadcrumb">
+		<li><a href="/admin">Home</a> <span class="divider">/</span></li>
+		<li><a href="/admin/pages">Pages</a> <span class="divider">/</span></li>
+		<li class="active">Edit page</li>
+	    </ul>
+    <form class="form-horizontal" action="" method="POST">
+	<div class="control-group">
+	    <label class="control-label">parent</label>
+	    <div class="controls">
+		<select name="parent">
+		    {% include "admin/page-options.twig" with {'links':bcms.MenuController.menuTree()} only %}
+		</select>
+		<label class="checkbox">
+		    <input type="checkbox" name="is_visible"{% if bcms.page.is_visible %}checked="checked"{% endif %}> Show in menu
+		</label>
+	    </div>
+	</div>
+	<div class="control-group">
+	    <label class="control-label">Name</label>
+	    <div class="controls">
+		<input type="text" name="name_menu" value = "{{ bcms.page.name_menu }}" placeholder="name_menu">
+	    </div>
+	</div>
+	<div class="control-group">
+	    <label class="control-label">Slug</label>
+	    <div class="controls">
+		<input type="text" name="name_url" value = "{{ bcms.page.name_url }}" placeholder="name_url">
+	    </div>
+	</div>
+	<div class="control-group">
+	    <label class="control-label">Text</label>
+	    <div class="controls">
+		<textarea class="span12" name="content" rows="8">{{ bcms.page.content }}</textarea>
+	    </div>
+	</div>
+	<div class="control-group">
+	    <label class="control-label">template</label>
+	    <div class="controls">
+		<select name="template">
+		    <option value=""{% if bcms.page.template ==  '' %} selected="selected"{% endif %}>Default</option>
+
+		    {% for template in bcms.templates %}
+			<option value="{{ template }}"{% if bcms.page.template ==  template %} selected="selected"{% endif %}>{{ template }}</option>
+		    {% endfor %}		    
+		</select>		
+	    </div>
+	</div>
+
+	<div class="control-group">
+	    <label class="control-label">name_title</label>
+	    <div class="controls">
+		<input type="text" name="name_title" value = "{{ bcms.page.name_title }}" placeholder="name_title">
+	    </div>
+	</div>
+	<div class="control-group">
+	    <label class="control-label">name_page</label>
+	    <div class="controls">
+		<input type="text" name="name_page" value = "{{ bcms.page.name_page }}" placeholder="name_page">
+	    </div>
+	</div>
+	<div class="control-group">
+	    <label class="control-label">redirect_url</label>
+	    <div class="controls">
+		<input type="text" name="redirect_url" value = "{{ bcms.page.redirect_url }}" placeholder="redirect_url">
+		<span class="help-block">Page will automatically redirect to this url</span>
+	    </div>
+	</div>
+
+	<div class="form-actions">
+	    <button type="submit" class="btn btn-primary">Save and return to list</button>	    
+	    <button type="submit" class="btn">Save</button>
+	    <button type="button" class="btn">Cancel</button>
+	    <button type="button" class="btn btn-danger pull-right">Delete</button>
+	</div>	
+</form>
+	</div>
+	<div class="span3">
+	    <ul>
+		{% include "admin/page-links.twig" with {'links':bcms.MenuController.menuTree('all')} only %}
+	    </ul>
+	</div>    
+{% endblock %}

@@ -11,6 +11,7 @@ $app->view(new \Slim\Extras\Views\Twig());
 $bcms['app'] = $app;
 
 $twig = $app->view()->getEnvironment();
+$twig->addExtension(new Twig_Extension_StringLoader());
 $twig->addGlobal('bcms', $bcms);
 
 $bcms['PageController'] = $bcms->share(function ($bcms) {

@@ -29,11 +29,7 @@ class MenuController extends Controller
       if(!$basePage) return;
       
       $pages = ORM::for_table('b_pages')
-                  ->select('id')
-                  ->select('name_url')
-                  ->select('name_menu')
-                  ->select('url')
-                  ->select('has_childs')
+                  ->select_many('id', 'name_url', 'name_menu', 'url', 'has_childs')
                   ->where('parent', $basePage->id)
                   ->where('is_visible', 1)
                   ->order_by_asc('order')
@@ -54,10 +50,7 @@ class MenuController extends Controller
       $homepage = ORM::for_table('b_pages')->select('id')->where('parent', 0)->where('name_url', '')->find_one();
       
       $pages = ORM::for_table('b_pages')
-                  ->select('id')
-                  ->select('url')
-                  ->select('name_menu')
-                  ->select('has_childs')
+                  ->select_many('id', 'url', 'name_menu', 'has_childs')
                   ->where('parent', $homepage->id)
                   ->where('is_visible', 1)
                   ->order_by_asc('order')
@@ -155,7 +148,7 @@ class MenuController extends Controller
                ->select('url')
                ->select('has_childs')
                ->where('parent', $parent)
-               ->where('is_visible', 1)
+               //->where('is_visible', 1)
                ->order_by_asc('order')
                ->find_many();
       
