@@ -1,11 +1,11 @@
 <?php
 
 $app->get('/generateUrls', function () use ($bcms) {
-    $bcms['MenuController']->generateUrls();
+    $bcms['PageController']->generateUrls();
 });
 
 $app->get('/has_childs', function () use ($bcms) {
-    $bcms['MenuController']->hasChilds();
+    $bcms['PageController']->hasChilds();
 });
 
 $app->get('/', function () use ($app) {
@@ -68,7 +68,7 @@ $app->post('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) 
         //$page->set_expr('date_changed', 'NOW()');
         $page->save();
         
-        $bcms['MenuController']->generateUrls();
+        $bcms['PageController']->generateUrls();
         
         $bcms['app']->flash('success', 'Success! Page is saved.');
     }
@@ -117,7 +117,7 @@ $app->post('/admin/pages/add', $authenticate($bcms['app']), function () use ($bc
         //$page->set_expr('date_created', 'NOW()');
         $page->save();
         
-        $bcms['MenuController']->generateUrls();
+        $bcms['PageController']->generateUrls();
         
         $bcms['app']->flash('success', 'Success! Page is created.');
    

@@ -1,3 +1,8 @@
+<select name="parent">
+    {% include "admin/page-options.twig" with {'links':bcms.PageController.menuTree()} only %}
+</select>
+
+
 {% for link in links %}
     {% set level = link.url | split('/') | length - 1 %}
     <option value="{{ link.id }}"{% if link.id == bcms.page.parent %} selected="selected"{% endif %} style="padding-left:{{ level * 10 }}px; font-size:{% if 14 - level < 11 %}{{ 11 }}{% else %}{{ 14 - level }}{% endif %}px">{{ link.name_menu }}</option>

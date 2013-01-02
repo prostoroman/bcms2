@@ -12,14 +12,11 @@ $bcms['app'] = $app;
 
 $twig = $app->view()->getEnvironment();
 $twig->addExtension(new Twig_Extension_StringLoader());
+//$twig->addExtension(new Twig_Extensions_Extension_I18n());
 $twig->addGlobal('bcms', $bcms);
 
 $bcms['PageController'] = $bcms->share(function ($bcms) {
     return new PageController($bcms);
-});
-
-$bcms['MenuController'] = $bcms->share(function ($bcms) {
-    return new MenuController($bcms);
 });
 
 foreach (glob("../app/model/*.php") as $filename)

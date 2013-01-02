@@ -1,5 +1,17 @@
 {% extends "admin/layout.html.twig" %}
 
+{% macro options(link) %}
+{% spaceless %}
+    {% set level = link.url | split('/') | length - 1 %}
+    <option value="{{ link.id }}"{% if link.id == bcms.page.parent %} selected="selected"{% endif %} style="padding-left:{{ level * 10 }}px; font-size:{% if 14 - level < 11 %}{{ 11 }}{% else %}{{ 14 - level }}{% endif %}px">{{ link.name_menu }}</option>
+    {% if link.childs %}
+	{% for child in link.childs %}
+	{{ _self.options(child) }}
+	{% endfor %}
+    {% endif %}
+{% endspaceless %}
+{% endmacro %}
+
 {% block sidebar %}
 {% endblock %}
 
@@ -26,10 +38,12 @@
 	    <label class="control-label">parent</label>
 	    <div class="controls">
 		<select name="parent">
-		    {% include "admin/page-options.twig" with {'links':bcms.MenuController.menuTree()} only %}
+		{% for option in bcms.PageController.menuTree() %}
+		    {{ _self.options(option) }}
+		{% endfor %}
 		</select>
 		<label class="checkbox">
-		    <input type="checkbox" name="is_visible"{% if bcms.page.is_visible %}checked="checked"{% endif %}> Show in menu
+		    <input type="checkbox" name="is_visible"{% if bcms.page.is_visible %} checked="checked"{% endif %}> Show in menu
 		</label>
 	    </div>
 	</div>

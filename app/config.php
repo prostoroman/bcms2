@@ -24,6 +24,7 @@ $bcms['slim.config'] = array(
 
 $bcms['twig.config'] = array(
     'templates.path' => '../app/view',
+    //'cache' => '../app/view/cache',
     'log.level' => 4,
     'log.enabled' => true,
     'log.writer' => new \Slim\Extras\Log\DateTimeFileWriter(array(

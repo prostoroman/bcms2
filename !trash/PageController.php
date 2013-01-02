@@ -1,10 +1,63 @@
 <?php
 
-class MenuController extends Controller
+/**
+* PageController
+* 
+* Class for working with pages
+* 
+* @author Roman Lokhov <roman@bs1.ru>
+* @version 1.0
+*/
+
+class PageController extends Controller
 {
    
    public function init(Pimple $di) {
       
+   }
+
+   /**
+   * find pages by url-parts array
+   * 
+   * @param array $parts parts of url
+   * @return object
+   */   
+   
+   public function findByUrl($parts) {
+
+      $parent = 0;
+      $maxLevel = count($parts);
+      
+      $url = implode('/', $parts);
+      
+      $itemPage = Model::factory('Page')->where('url', $url)->find_one();
+      
+      /*
+      for($i = 0; $i < $maxLevel; $i++) {
+         
+         if($i == 0) {
+            $itemPage = ORM::for_table('b_pages')->select('id')->select('name_url')->select('name_menu')->where('parent', 0)->where('name_url', '')->find_one();
+         }
+         else {
+            $itemPage = Model::factory('Page')->where('parent', $parent)->where('name_url', $parts[$i])->find_one();
+         }
+         
+         $parent = $itemPage ? $itemPage->id : $parent;
+         
+         if(!is_object($itemPage)) break;
+         
+      }
+      */
+      
+      return $itemPage;
+   
+   }
+
+   public function findById($id)
+   {
+      $page = Model::factory('Page')->where('id', $id)->find_one();
+            
+      return $page;
    }
 
    function menu($level = 1) {
@@ -124,7 +177,7 @@ class MenuController extends Controller
 
          if($page->id > 0 && $page->has_childs)
          {
-            $out = $this->menuTree($out, $page->id, $level);
+            $out = $this->menuTreeHTML($out, $page->id, $level);
          }
          
          $out .= '</li>'.PHP_EOL;
@@ -261,5 +314,5 @@ class MenuController extends Controller
       $url = preg_replace("/\/$/","",$url);
 
       return $url;
-   }
+   }  
 }

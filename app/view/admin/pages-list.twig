@@ -1,5 +1,30 @@
 {% extends "admin/layout.html.twig" %}
 
+{% macro links(link) %}
+    {% set level = link.url | split('/') | length - 1 %}
+    <tr>
+        <td style="padding-left:{{ level * 10 }}px; font-size:{{ 100 - (level-1)*5 }}%">
+            {{ link.name_menu }}
+        </td>
+        <td id="actions-{{ link.id }}">
+            <a class="btn btn-mini" href="/admin/pages/edit/{{ link.id }}"><i class="icon-edit"></i> Edit</a>
+            <a class="btn btn-mini" rel="tooltip" title="Open page in new tab" target="_blank" href="{{ link.url }}"><i class="icon-eye-open"></i></a>
+            {% if link.url != '/' %}
+            <button class="btn btn-mini{% if loop.first %} disabled{% endif %}"><i class="icon-arrow-up"></i></button>
+            <button class="btn btn-mini{% if loop.last %} disabled{% endif %}"><i class="icon-arrow-down"></i></button>
+            <!--a class="btn btn-danger btn-mini" href="/admin/pages/delete/{{ link.id }}" rel="popover" data-content="And here's some amazing content. It's very engaging. right?"><i class="icon-trash icon-white"></i></a-->
+            
+            {% endif %}
+        </td>
+        <td><input name="pages[{{ link.id }}]" type="checkbox"></td>
+    </tr>
+	{% if link.childs %}
+	{% for child in link.childs %}
+	{{ _self.links(child) }}
+	{% endfor %}
+    {% endif %}
+{% endmacro %}
+
 {% block sidebar %}
 {% endblock %}
 
@@ -10,12 +35,26 @@
 	    <h1>Pages <small>Manage pages list</small></h1>
 	</div>
 	<div class="span3">
-	    <a href="/admin/pages/add" class="btn btn-large btn-block btn-primary"><i class="icon-plus icon-white"></i> Add new page</a>
+	    <a href="/admin/pages/add" class="btn btn-large btn-primary"><i class="icon-plus icon-white"></i> Add new page</a>
 	</div>
     </div>
 	<hr>
 
-    <ul>
-	{% include "admin/page-links.twig" with {'links':bcms.MenuController.menuTree('all')} only %}
-    </ul>	    
+    <table class="table table-hover table-condensed">
+	<thead>
+	    <tr>
+		<th>Name</th>
+		<th>Action</th>
+		<th><input type="checkbox"></th>
+	    </tr>
+	</thead>
+	<tbody>
+
+	{% for links in bcms.PageController.menuTree() %}
+	    {{ _self.links(links) }}
+	{% endfor %}
+	    
+
+	</tbody>
+    </table>	    
 {% endblock %}

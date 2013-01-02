@@ -14,7 +14,7 @@
 	{% block menu %}
 	    
 	    <ul class="menu">
-		{% include "menu-links.twig" with {'links':bcms.MenuController.menuTree(0, 0, 1)} only %}
+		{% include "menu-links.twig" with {'links':bcms.PageController.menuTree(0, 0, 1)} only %}
 	    </ul>	    
 	    
 	{% endblock %}
@@ -31,15 +31,15 @@
 	<div class="col_3">
 
 	    <ul class="menu1">
-		{% for m1 in bcms.MenuController.menu(1) %}
+		{% for m1 in bcms.PageController.menu(1) %}
 		    <li><a href="{{ m1.url }}" {% if m1.is_active %}class="active"{% endif %}>{{ m1.name_menu }}</a>
 			{% if m1.is_active and m1.has_childs and m1.id > 0 %}
 			    <ul class="menu2">
-				{% for m2 in bcms.MenuController.menu(2) %}
+				{% for m2 in bcms.PageController.menu(2) %}
 				    <li><a href="{{ m2.url }}" {% if m2.is_active %}class="active"{% endif %}>{{ m2.name_menu }}</a>
 				    {% if m2.is_active and m2.has_childs %}
 					<ul class="menu3">
-					    {% for m3 in bcms.MenuController.menu(3) %}
+					    {% for m3 in bcms.PageController.menu(3) %}
 						<li><a href="{{ m3.url }}" {% if m3.is_active %}class="active"{% endif %}>{{ m3.name_menu }}</a></li>
 					    {% endfor %}
 					</ul>					

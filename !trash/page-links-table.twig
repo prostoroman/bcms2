@@ -1,0 +1,22 @@
+{% for link in links %}
+    {% set level = link.url | split('/') | length - 1 %}
+    <tr>
+        <td style="padding-left:{{ level * 10 }}px; font-size:{{ 100 - (level-1)*5 }}%">
+            {{ link.name_menu }}
+        </td>
+        <td>
+            <a class="btn btn-mini" rel="tooltip" title="first tooltip" href="/admin/pages/edit/{{ link.id }}"><i class="icon-edit"></i> Edit</a>
+            <a class="btn btn-mini" rel="tooltip" title="Open page in new tab" target="_blank" href="{{ link.url }}"><i class="icon-eye-open"></i></a>
+            {% if link.url != '/' %}
+            <button class="btn btn-mini{% if loop.first %} disabled{% endif %}"><i class="icon-arrow-up"></i></button>
+            <button class="btn btn-mini{% if loop.last %} disabled{% endif %}"><i class="icon-arrow-down"></i></button>
+            <a class="btn btn-danger btn-mini" href="/admin/pages/delete/{{ link.id }}" rel="popover" data-content="And here's some amazing content. It's very engaging. right?"><i class="icon-trash icon-white"></i></a>
+            
+            {% endif %}
+        </td>
+        <td><input name="pages[{{ link.id }}]" type="checkbox"></td>
+    </tr>
+    {% if link.childs %}
+        {% include "admin/page-links-table.twig" with {'links': link.childs} %}
+    {% endif %}
+{% endfor %}
