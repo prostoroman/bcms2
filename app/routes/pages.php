@@ -16,6 +16,7 @@ $app->get('/', function () use ($app) {
 $app->get('/admin/pages', $authenticate($bcms['app']), function () use ($bcms)
 {
     $bcms['page'] = array('title' => 'bcms');
+    $bcms['title'] = 'Pages list';
     $bcms['app']->render('admin/pages-list.twig');
     
 })->name('pages-list');
@@ -38,6 +39,8 @@ $app->get('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) u
     {
         $bcms['app']->notFound();
     }
+    
+    $bcms['title'] = 'Edit page "' . $bcms['page']['name_menu']. '"';
     
     $bcms['app']->render('admin/pages-edit.twig');
     
@@ -81,6 +84,7 @@ $app->post('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) 
 // Add new page
 $app->get('/admin/pages/add', $authenticate($bcms['app']), function () use ($bcms)
 {
+        $bcms['title'] = 'Add new page';
         $templates = array();
         foreach (glob("../app/view/pages/*.twig") as $filename)
         {
