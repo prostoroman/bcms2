@@ -198,10 +198,7 @@ class PageController extends Controller
       if($only_visible)
       {
          $pagesORM = ORM::for_table('b_pages')
-                  ->select('id')
-                  ->select('name_menu')
-                  ->select('url')
-                  ->select('has_childs')
+                  ->select_many('id', 'name_menu', 'url', 'has_childs', 'order', 'date_changed')
                   ->where('parent', $parent)
                   ->where('is_visible', 1)
                   ->order_by_asc('order')
@@ -210,10 +207,7 @@ class PageController extends Controller
       else
       {
          $pagesORM = ORM::for_table('b_pages')
-                  ->select('id')
-                  ->select('name_menu')
-                  ->select('url')
-                  ->select('has_childs')
+                  ->select_many('id', 'name_menu', 'url', 'has_childs', 'order', 'date_changed')
                   ->where('parent', $parent)
                   //->where('is_visible', 1)
                   ->order_by_asc('order')
@@ -244,8 +238,8 @@ class PageController extends Controller
       return $pages;
    }
       
-   public function generateUrls() {
-
+   public function generateUrls()
+   {
       $pages = ORM::for_table('b_pages')->select('id')->select('name_url')->select('parent')->find_many();
       
       foreach($pages as $page) {
@@ -257,9 +251,73 @@ class PageController extends Controller
             //echo $page->name_url . ' &rarr; ' . $page->url . '<br />';
          }
       }
-
    }   
 
+   public function fixOrder($parent = 0)
+   {
+      $pages = ORM::for_table('b_pages')
+               ->select_many('id', 'name_menu', 'url', 'has_childs', 'order', 'date_changed')
+               ->where('parent', $parent)
+               ->order_by_asc('order')
+               ->find_many();
+
+      $countPages = count($pages);
+      
+      for ($i=0; $i < $countPages; $i++)  
+      {
+         
+         $pages[$i]->order = $i + 1;
+         $pages[$i]->save();
+         
+         echo $pages[$i]->name_menu.' - '.$pages[$i]->order.'<br>';
+         
+         if($pages[$i]->id > 0 && $pages[$i]->has_childs)
+         {
+            $this->fixOrder($pages[$i]->id);
+         }
+      }
+   }
+
+   public function move($id, $where = 'up')
+   {
+      $page = ORM::for_table('b_pages')
+               ->select_many('id', 'parent', 'order')
+               ->where('id', $id)
+               ->find_one();
+      
+      if($where == 'up')
+      {
+         if($page->order < 2) return false;
+         $nextOrder = $page->order - 1;
+      }
+      elseif($where == 'down')
+      {
+         $maxOrder = ORM::for_table('b_pages')->where('parent', $page->parent)->max('order');
+         
+         if($page->order == $maxOrder) return false;
+         $nextOrder = $page->order + 1;
+      }      
+      
+      $neighbor = ORM::for_table('b_pages')
+               ->select_many('id', 'parent', 'order')
+               ->where('parent', $page->parent)
+               ->where('order', $nextOrder)
+               ->find_one();
+
+      if(!$neighbor)
+      {
+         return false;
+      }
+
+      $neighbor->order = $page->order;
+      $neighbor->save();      
+      
+      $page->order = $nextOrder;
+      $page->save();
+
+      return true;
+   }   
+   
    public function hasChilds() {
 
       $pages = ORM::for_table('b_pages')->select('id')->select('name_url')->select('parent')->find_many();

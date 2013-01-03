@@ -8,6 +8,11 @@ $app->get('/has_childs', function () use ($bcms) {
     $bcms['PageController']->hasChilds();
 });
 
+$app->get('/fixOrder', function () use ($bcms) {
+    $bcms['PageController']->fixOrder();
+});
+
+
 $app->get('/', function () use ($app) {
     $app->pass();
 })->name('home');
@@ -131,14 +136,21 @@ $app->get('/admin/pages/delete/:id', $authenticate($bcms['app']), function ($id)
 {
     $page = $bcms['PageController']->findById($id);
     $countChilds = ORM::for_table('b_pages')->where('parent', $id)->count();
-    
-    if($page and $countChilds)
+
+    if(!$id)
+    {
+        $bcms['app']->flash('error', 'You can\'t delete this page.');
+    }
+    elseif($page and $countChilds)
     {
         $bcms['app']->flash('error', 'You can\'t delete page wich has childs.');
     }
     else
     {
         $page->delete();
+        
+        $bcms['PageController']->fixOrder($page->parent);
+        
         $bcms['app']->flash('info', 'Page deleted.');
     }
     
@@ -146,6 +158,23 @@ $app->get('/admin/pages/delete/:id', $authenticate($bcms['app']), function ($id)
     
 })->name('pages.delete');
 
+// Edit pages
+$app->get('/admin/pages/move/:id/:where', $authenticate($bcms['app']), function ($id, $where) use ($bcms)
+{
+    $result = $bcms['PageController']->move($id, $where);
+    
+    if($result)
+    {
+        $bcms['app']->flash('info', 'Page is moved.');
+    }
+    else
+    {
+        $bcms['app']->flash('error', 'Error!');
+    }
+
+    $bcms['app']->redirect($bcms['app']->urlFor('pages-list'));
+    
+});
 
 /* Public page */
 $app->get('(:parts+)', function ($parts) use ($bcms) {
