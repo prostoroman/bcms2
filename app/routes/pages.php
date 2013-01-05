@@ -26,6 +26,57 @@ $app->get('/admin/pages', $authenticate($bcms['app']), function () use ($bcms)
     
 })->name('pages-list');
 
+// Add new page
+$app->get('/admin/pages/add', $authenticate($bcms['app']), function () use ($bcms)
+{
+        $bcms['title'] = 'Add new page';
+        $templates = array();
+        foreach (glob("../app/view/pages/*.twig") as $filename)
+        {
+            $templates[] = basename($filename);
+        }
+        $bcms['templates'] = $templates;
+    
+    $bcms['app']->render('admin/pages-edit.twig');
+    
+})->name('pages.add');
+
+// Save new page
+$app->post('/admin/pages/add', $authenticate($bcms['app']), function () use ($bcms)
+{
+    $page = ORM::for_table('b_pages')->create();
+    
+        // Get request object
+        $req = $bcms['app']->request();
+        
+        if(!$req->post('name_menu') or !$req->post('name_url'))
+        {
+            $bcms['app']->flash('error', 'Name or url is not defined.');
+            $bcms['app']->redirect($bcms['app']->urlFor('pages-add'));
+        }
+        
+        //$page->parent = $req->post('parent');
+        $page->set('parent', $req->post('parent'));
+        $page->name_menu = $req->post('name_menu');
+        $page->name_url = $req->post('name_url');
+        $page->content = $req->post('content');
+        $page->template = $req->post('template');
+        $page->name_title = $req->post('name_title');
+        $page->name_page = $req->post('name_page');
+        $page->redirect_url = $req->post('redirect_url');
+        $page->order = $req->post('order') ? $req->post('order') : ORM::for_table('b_pages')->where('parent', $page->parent)->max('order');
+        $page->set_expr('date_created', 'NOW()');
+        $page->save();
+        
+        $bcms['PageController']->generateUrls($page->parent);
+        $bcms['PageController']->fixOrder($page->parent);
+        
+        $bcms['app']->flash('success', 'Success! Page is created.');
+   
+    $bcms['app']->redirect($bcms['app']->urlFor('pages-list'));
+    
+})->name('pages-add');;
+
 // Edit pages
 $app->get('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) use ($bcms)
 {
@@ -49,7 +100,7 @@ $app->get('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) u
     
     $bcms['app']->render('admin/pages-edit.twig');
     
-})->name('pages.edit');
+})->name('pages-edit');
 
 // Save edited page
 $app->post('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) use ($bcms)
@@ -70,10 +121,14 @@ $app->post('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) 
         $page->name_title = $req->post('name_title');
         $page->name_page = $req->post('name_page');
         $page->redirect_url = $req->post('redirect_url');
-        //$page->set_expr('date_changed', 'NOW()');
+        if($req->post('order'))
+        {
+            $page->order = $req->post('order');
+        }
         $page->save();
         
-        $bcms['PageController']->generateUrls();
+        $bcms['PageController']->generateUrls($page->parent);
+        $bcms['PageController']->fixOrder($page->parent);
         
         $bcms['app']->flash('success', 'Success! Page is saved.');
     }
@@ -82,54 +137,9 @@ $app->post('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) 
         $bcms['app']->flash('error', 'Page is not found;');
     }
     
-    $bcms['app']->redirect($bcms['app']->urlFor('pages.edit', array('id' => $id)));
+    $bcms['app']->redirect($bcms['app']->urlFor('pages-edit', array('id' => $id)));
     
 });
-
-// Add new page
-$app->get('/admin/pages/add', $authenticate($bcms['app']), function () use ($bcms)
-{
-        $bcms['title'] = 'Add new page';
-        $templates = array();
-        foreach (glob("../app/view/pages/*.twig") as $filename)
-        {
-            $templates[] = basename($filename);
-        }
-        $bcms['templates'] = $templates;
-    
-    $bcms['app']->render('admin/pages-edit.twig');
-    
-})->name('pages.add');
-
-// Save edited page
-$app->post('/admin/pages/add', $authenticate($bcms['app']), function () use ($bcms)
-{
-    $page = ORM::for_table('b_pages')->create();
-    
-        // Get request object
-        $req = $bcms['app']->request();
-                
-        //$page->parent = $req->post('parent');
-        $page->set('parent', $req->post('parent'));
-        $page->name_menu = $req->post('name_menu');
-        $page->name_url = $req->post('name_url');
-        $page->content = $req->post('content');
-        $page->template = $req->post('template');
-        $page->name_title = $req->post('name_title');
-        $page->name_page = $req->post('name_page');
-        $page->redirect_url = $req->post('redirect_url');
-        $page->order = ORM::for_table('b_pages')->where('parent', $page->parent)->max('order');
-        //$page->set_expr('date_created', 'NOW()');
-        $page->save();
-        
-        $bcms['PageController']->generateUrls();
-        
-        $bcms['app']->flash('success', 'Success! Page is created.');
-   
-    $bcms['app']->redirect($bcms['app']->urlFor('pages-list'));
-    
-});
-
 
 // Delete page
 $app->get('/admin/pages/delete/:id', $authenticate($bcms['app']), function ($id) use ($bcms)
@@ -156,7 +166,33 @@ $app->get('/admin/pages/delete/:id', $authenticate($bcms['app']), function ($id)
     
     $bcms['app']->redirect($bcms['app']->urlFor('pages-list'));
     
-})->name('pages.delete');
+})->name('page-delete');
+
+
+// Delete many pages
+$app->post('/admin/pages/delete_many', $authenticate($bcms['app']), function () use ($bcms)
+{
+
+    $req = $bcms['app']->request();
+
+    if($req->post('pages'))
+    {
+        // Get request object
+                
+        print_r($req->post('pages'));
+        
+        $bcms['app']->flash('info', 'Pages have been deleted.');
+    }
+    else
+    {
+        $bcms['app']->flash('error', 'Nothing selected;');
+    }
+    
+    //$bcms['app']->redirect($bcms['app']->urlFor('pages-list'));
+    
+});
+
+
 
 // Edit pages
 $app->get('/admin/pages/move/:id/:where', $authenticate($bcms['app']), function ($id, $where) use ($bcms)

@@ -23,31 +23,13 @@ class PageController extends Controller
    * @return object
    */   
    
-   public function findByUrl($parts) {
-
+   public function findByUrl($parts)
+   {
       $parent = 0;
       $maxLevel = count($parts);
-      
       $url = implode('/', $parts);
       
-      $itemPage = Model::factory('Page')->where('url', $url)->find_one();
-      
-      /*
-      for($i = 0; $i < $maxLevel; $i++) {
-         
-         if($i == 0) {
-            $itemPage = ORM::for_table('b_pages')->select('id')->select('name_url')->select('name_menu')->where('parent', 0)->where('name_url', '')->find_one();
-         }
-         else {
-            $itemPage = Model::factory('Page')->where('parent', $parent)->where('name_url', $parts[$i])->find_one();
-         }
-         
-         $parent = $itemPage ? $itemPage->id : $parent;
-         
-         if(!is_object($itemPage)) break;
-         
-      }
-      */
+      $itemPage = ORM::for_table('b_pages')->where('url', $url)->find_one();
       
       return $itemPage;
    
@@ -55,7 +37,7 @@ class PageController extends Controller
 
    public function findById($id)
    {
-      $page = Model::factory('Page')->where('id', $id)->find_one();
+      $page = ORM::for_table('b_pages')->where('id', $id)->find_one();
             
       return $page;
    }
@@ -96,12 +78,10 @@ class PageController extends Controller
       return $pages;
    }
 
-   public function menu1() {
-
-      //$pages = ORM::for_table('b_pages')->raw_query("SELECT `id`, `name_url`, `name_menu` FROM `b_pages` WHERE `parent` = (SELECT `id` FROM `b_pages` WHERE `parent` = '0' AND `name_url` = '' LIMIT 1) AND `is_visible` = '1' ORDER BY `order` ASC")->find_many();
-
+   public function menu1()
+   {
       $homepage = ORM::for_table('b_pages')->select('id')->where('parent', 0)->where('name_url', '')->find_one();
-      
+     
       $pages = ORM::for_table('b_pages')
                   ->select_many('id', 'url', 'name_menu', 'has_childs')
                   ->where('parent', $homepage->id)
@@ -125,67 +105,6 @@ class PageController extends Controller
       }
       
       return $pages;
-   }
-   
-   
-   public function submenu($pageId) {
-      
-      $pages = ORM::for_table('b_pages')->select('name_url')->select('name_menu')->select('parent')->select('url')->where('parent', $pageId)->where('is_visible', 1)->order_by_asc('order')->find_many();
-
-      foreach($pages as $page)
-      {
-         $page->name_url = $page->url;
-      }
-      
-      return $pages;
-   }
-
-   public function menuTreeHTML($out = '', $parent = 0, $level = 0)
-   {
-      $level++;
-
-      $request = $this->app->request();
-      $url = $request->getResourceUri();
-      
-      $pages = ORM::for_table('b_pages')
-               ->select('id')
-               ->select('name_menu')
-               ->select('url')
-               ->select('has_childs')
-               ->where('parent', $parent)
-               ->where('is_visible', 1)
-               ->order_by_asc('order')
-               ->find_many();
-      
-      if(!$out)
-      {
-         $out = '<ul class="menu">'.PHP_EOL;
-      }
-      else if(!empty($pages))
-      {
-         $out .= '<ul class="'. $level . '">'.PHP_EOL;
-      }
-      
-      foreach ($pages as $page)  
-      {
-         $isActive = '';
-         
-         if($page->url == '/' && $url == '/') $isActive = ' current';
-         if($page->url !== '/' && strpos($url, $page->url) !== false) $isActive = ' current';
-         
-         $out .= '<li class="level'.$level.$isActive.'"><a href="' . $page->url . '">' . $page->name_menu . '</a>'.PHP_EOL;
-
-         if($page->id > 0 && $page->has_childs)
-         {
-            $out = $this->menuTreeHTML($out, $page->id, $level);
-         }
-         
-         $out .= '</li>'.PHP_EOL;
-      }
-      
-      $out .= !empty($pages) ? '</ul>'.PHP_EOL : '';
-
-      return $out;
    }
 
    public function menuTree($parent = 0, $level = 0, $only_visible = 0)
@@ -214,7 +133,6 @@ class PageController extends Controller
                   ->find_many();
       }
       
-      
       foreach($pagesORM as $page) {
          $pages[] = $page->as_array();
       }
@@ -227,6 +145,7 @@ class PageController extends Controller
          
          if($pages[$i]['url'] == '/' && $url == '/') $pages[$i]['active'] = TRUE;
          if($pages[$i]['url'] !== '/' && strpos($url, $pages[$i]['url']) !== false) $pages[$i]['active'] = TRUE;
+         $pages[$i]['level'] = $level;
          
          if($pages[$i]['id'] > 0 && $pages[$i]['has_childs'])
          {
@@ -238,9 +157,16 @@ class PageController extends Controller
       return $pages;
    }
       
-   public function generateUrls()
+   public function generateUrls($parent = 0)
    {
-      $pages = ORM::for_table('b_pages')->select('id')->select('name_url')->select('parent')->find_many();
+      if($parent)
+      {
+         $pages = ORM::for_table('b_pages')->select('id')->select('name_url')->select('parent')->where('parent', $parent)->find_many();
+      }
+      else
+      {
+         $pages = ORM::for_table('b_pages')->select('id')->select('name_url')->select('parent')->find_many();   
+      }
       
       foreach($pages as $page) {
          
@@ -338,8 +264,22 @@ class PageController extends Controller
             $page->save();
          }
       }
-
    } 
+
+   public function delete($id)
+   {
+      $page = $this->findById($id);
+      
+      if($page)
+      {
+         $page->delete();
+         return true;
+      }
+      else
+      {
+         return false;
+      }
+   }
    
    // Build URL path for a page
    private function build_url($page_url, $page_parent){

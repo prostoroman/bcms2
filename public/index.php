@@ -8,7 +8,7 @@ for($i=0; $i<1000; $i++){
 }
 */
 
-require '../vendor/autoload.php';
+require '../app/vendor/autoload.php';
 
 require '../app/config.php';
 require '../app/start.php';

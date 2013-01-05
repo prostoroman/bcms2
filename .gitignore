@@ -163,7 +163,10 @@ pip-log.txt
 .DS_Store
 
 #BMCS
-vendor
+app/vendor
 log
+app/logs
 app/view/cache
 !trash
+*.komodoproject
+.komodotools

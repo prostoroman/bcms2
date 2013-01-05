@@ -106,6 +106,7 @@
 	    <a class="btn" href="/admin/pages">Cancel</button>
 	    
 	    <!-- Button to trigger modal -->
+	    {% if bcms.page.url != '/' %}
 	    <a href="#deleteModal" role="button" class="btn btn-danger pull-right" data-toggle="modal">Delete</a>
 	     
 	    <!-- Modal -->
@@ -121,7 +122,8 @@
 		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 		<a href="/admin/pages/delete/{{ bcms.page.id }}" class="btn btn-danger">Delete</a>
 		</div>
-	    </div>	    
+	    </div>
+	    {% endif %}
 	</div>	
 	</form>
     </div>

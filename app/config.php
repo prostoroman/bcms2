@@ -17,7 +17,7 @@ $bcms['slim.config'] = array(
     'log.level' => 4,
     'log.enabled' => true,
     'log.writer' => new \Slim\Extras\Log\DateTimeFileWriter(array(
-        'path' => '../logs',
+        'path' => '../app/logs',
         'name_format' => 'y-m-d'
     ))
 );
@@ -28,7 +28,7 @@ $bcms['twig.config'] = array(
     'log.level' => 4,
     'log.enabled' => true,
     'log.writer' => new \Slim\Extras\Log\DateTimeFileWriter(array(
-        'path' => '../logs',
+        'path' => '../app/logs',
         'name_format' => 'y-m-d'
     ))
 );
