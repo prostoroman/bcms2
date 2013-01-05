@@ -6,6 +6,12 @@ $app = new \Slim\Slim($bcms['slim.config']);
 // Prepare TWIG
 \Slim\Extras\Views\Twig::$twigOptions = $bcms['twig.config'];
 
+foreach (glob("../app/lib/*.php") as $filename)
+{
+    require $filename;
+}
+
+
 $app->view(new \Slim\Extras\Views\Twig());
 
 $bcms['app'] = $app;
@@ -19,12 +25,3 @@ $bcms['PageController'] = $bcms->share(function ($bcms) {
     return new PageController($bcms);
 });
 
-foreach (glob("../app/model/*.php") as $filename)
-{
-    require $filename;
-}
-
-foreach (glob("../app/controller/*.php") as $filename)
-{
-    require $filename;
-}
