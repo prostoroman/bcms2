@@ -46,10 +46,16 @@ tr:hover .actions a.btn {display: inline-block; margin-top:-2px;}
 .check {width:30px;}
 
 .level-1 {}
-.level-2 a {padding-left: 20px; }
-.level-3 a {padding-left: 30px; font-size:95%;}
-.level-4 a {padding-left: 40px; font-size:90%;}
-.level-5 a {padding-left: 50px; font-size:85%;}
-.level-6 a {padding-left: 60px; font-size:80%;}
+.level-2 a, .level-3 a, .level-4 a, .level-5 a, .level-6 a
+{
+    background-repeat: no-repeat;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTI1QTA0ODE1OEI5MTFFMkJBRThDNTZGNDU5ODdEQ0EiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTI1QTA0ODI1OEI5MTFFMkJBRThDNTZGNDU5ODdEQ0EiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5MjVBMDQ3RjU4QjkxMUUyQkFFOEM1NkY0NTk4N0RDQSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5MjVBMDQ4MDU4QjkxMUUyQkFFOEM1NkY0NTk4N0RDQSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkECXn0AAAAxSURBVHjaYpgza1YDEDP8//8fAzMx4AF4JVmgdMPc2bNxSyanppJmLFgSmy4QAAgwAJ2BGE/JeoxUAAAAAElFTkSuQmCC)
+}
 
-#message {position: fixed; bottom:20px; left:20px;}
+.level-2 a {padding-left: 20px; background-position: 5px 50%;}
+.level-3 a {padding-left: 30px; font-size:95%; background-position: 15px 50%;}
+.level-4 a {padding-left: 40px; font-size:90%; background-position: 25px 50%;}
+.level-5 a {padding-left: 50px; font-size:85%; background-position: 35px 50%;}
+.level-6 a {padding-left: 60px; font-size:80%; background-position: 45px 50%;}
+
+#message {position: fixed; top:75px; left:400px;}

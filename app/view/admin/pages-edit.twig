@@ -37,11 +37,13 @@
 	<div class="control-group">
 	    <label class="control-label">parent</label>
 	    <div class="controls">
+		{% if bcms.page.url != '/' %}
 		<select name="parent">
 		{% for option in bcms.PageController.menuTree() %}
 		    {{ _self.options(option) }}
 		{% endfor %}
 		</select>
+		{% endif %}
 		<label class="checkbox">
 		    <input type="checkbox" name="is_visible"{% if bcms.page.is_visible %} checked="checked"{% endif %}> Show in menu
 		</label>
@@ -103,10 +105,10 @@
 	</div>
 	<div class="form-actions">
 	    <button type="submit" class="btn btn-primary">Save</button>
-	    <a class="btn" href="/admin/pages">Cancel</button>
+	    <a class="btn" href="/admin/pages">Cancel</a>
 	    
-	    <!-- Button to trigger modal -->
 	    {% if bcms.page.url != '/' %}
+	    <!-- Button to trigger delete page modal -->
 	    <a href="#deleteModal" role="button" class="btn btn-danger pull-right" data-toggle="modal">Delete</a>
 	     
 	    <!-- Modal -->

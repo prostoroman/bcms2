@@ -179,6 +179,20 @@ class PageController extends Controller
       }
    }   
 
+   public function movePage($order = 0, $parent = 0)
+   {
+      $page = ORM::for_table('b_pages')
+               ->select_many('id', 'order', 'parent')
+               ->where('parent', $parent)
+               ->where('order', $order)
+               ->find_one();
+      if($page)
+      {
+         $page->order = $page->order+1;
+         $this->movePage($page->order, $page->parent);
+      }
+   }
+   
    public function fixOrder($parent = 0)
    {
       $pages = ORM::for_table('b_pages')
@@ -195,7 +209,7 @@ class PageController extends Controller
          $pages[$i]->order = $i + 1;
          $pages[$i]->save();
          
-         echo $pages[$i]->name_menu.' - '.$pages[$i]->order.'<br>';
+         //echo $pages[$i]->name_menu.' - '.$pages[$i]->order.'<br>';
          
          if($pages[$i]->id > 0 && $pages[$i]->has_childs)
          {

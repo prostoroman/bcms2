@@ -111,9 +111,13 @@ $app->post('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) 
     {
         // Get request object
         $req = $bcms['app']->request();
-                
-        //$page->parent = $req->post('parent');
-        $page->set('parent', $req->post('parent'));
+
+        if($page->parent !==$req->post('parent'))
+        {
+            //$page->parent = $req->post('parent');
+            $page->set('parent', $req->post('parent'));
+        }
+
         $page->name_menu = $req->post('name_menu');
         $page->name_url = $req->post('name_url');
         $page->content = $req->post('content');
@@ -121,10 +125,13 @@ $app->post('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) 
         $page->name_title = $req->post('name_title');
         $page->name_page = $req->post('name_page');
         $page->redirect_url = $req->post('redirect_url');
-        if($req->post('order'))
+
+        if($page->order !== $req->post('order'))
         {
             $page->order = $req->post('order');
+            $bcms['PageController']->movePage($page->order, $page->parent);
         }
+        
         $page->save();
         
         $bcms['PageController']->generateUrls($page->parent);

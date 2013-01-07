@@ -2,14 +2,7 @@
 
 $time_start = microtime(true); //place this before any script you want to calculate time
 
-/*/sample script
-for($i=0; $i<1000; $i++){
- //do anything
-}
-*/
-
 require '../app/vendor/autoload.php';
-
 require '../app/config.php';
 require '../app/start.php';
 
@@ -23,8 +16,7 @@ foreach (glob("../app/routes/*.php") as $filename)
 $app->run();
 
 
-/// STATISTIC //////////////////////////////////
-
+/* STATISTIC //////////////////////////////////
 $queryLog = ORM::get_query_log();
 echo '<pre>';
 print_r($queryLog);
@@ -41,5 +33,5 @@ function convert($size)
 echo '<b>Memory usage:</b> ' . convert(memory_get_peak_usage(true)).'<br />'; // 123 kb
 echo '<b>Total Execution Time:</b> '.$execution_time.' Mins<br />'; //execution time of the script
 echo '<b>Page Creation Time:</b> '.date('H:i:s e').'<br/><br/>'; //execution time of the script
-
+*/
 ?>

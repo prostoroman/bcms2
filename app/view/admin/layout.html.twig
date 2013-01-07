@@ -10,7 +10,8 @@
     <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="/assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="/assets/css/bcms.css" rel="stylesheet">	
-
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/smoothness/jquery-ui.css" />
+    
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -39,23 +40,23 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="/admin/pages"><i class="icon-list-alt icon-white"></i> Pages</a></li>
-              <li><a href="#files" data-toggle="modal" data-target="#files"><i class="icon-folder-open icon-white"></i> Files</a></li>
-	      <li><a href="#about"><i class="icon-wrench icon-white"></i> Options</a></li>
-              <li><a href="#contact"><i class="icon-book icon-white"></i> News</a></li>
-	      <li><a href="#about"><i class="icon-user icon-white"></i> Users</a></li>
+              <li><a href="/admin/files"><i class="icon-folder-open icon-white"></i> Files</a></li>
+	      <li><a href="/admin/options"><i class="icon-wrench icon-white"></i> Options</a></li>
+              <li><a href="/admin/news"><i class="icon-book icon-white"></i> News</a></li>
+	      <li><a href="/admin/users"><i class="icon-user icon-white"></i> Users</a></li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="http://twitter.github.com/bootstrap/base-css.html" target="_blank">Twitter bootstrap</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
+		  <li><a href="{{ bcms.app.urlFor('home') }}"><i class="icon-globe"></i> Your site home</a></li>
+                  <li><a href="http://www.bcms.ru"><i class="icon-question-sign"></i> Help and Support</a></li>
+                  <li><a href="https://github.com/prostoroman/bcms2">Github project page</a></li>
                   <li class="divider"></li>
-                  <li class="nav-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
+                  <li><a href="http://twitter.github.com/bootstrap/base-css.html" target="_blank">Twitter bootstrap</a></li>
+                  <li><a href="http://slimframework.com/">Slim Framework</a></li>
+                  <li><a href="http://pimple.sensiolabs.org/">Pimple</a></li>
                 </ul>
               </li>
-	      <li><a href="{{ bcms.app.urlFor('home') }}"><i class="icon-globe icon-white"></i> Site home</a></li>
+	      
             </ul>
 	    <ul class="nav pull-right">
 		<li class="dropdown">
@@ -88,19 +89,6 @@
           </div>
         </div>
       </div>
-<div class="modal hide fade" id="files" style="width:800px;">
-    <div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h3>Files</h3>
-    </div>
-    <div class="modal-body">
-        <p>One fine body…</p>
-	<div id="elfinder"></div>
-    </div>
-    <div class="modal-footer">
-	<a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
-    </div>
-</div>
       <hr>
       <footer>
         <p>&copy; 2012 bcms</p>
