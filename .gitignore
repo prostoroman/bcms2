@@ -170,3 +170,5 @@ app/view/cache
 !trash
 *.komodoproject
 .komodotools
+public/assets/.quarantine
+public/assets/.tmb
