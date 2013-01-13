@@ -1,0 +1,97 @@
+{% extends "admin/layout.html.twig" %}
+
+{% block sidebar %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row-fluid">
+    <div class="span9">
+	<h1>Users <small>manage users</small></h1>
+    </div>
+    <div class="span3">
+	<a href="#add-form" role="button" class="btn btn-primary btn-large pull-right" data-toggle="modal"><i class="icon-plus-sign"></i> Add new user</a>
+    </div>
+</div>
+	<ul class="breadcrumb">
+	    <li><a href="/admin">Admin</a> <span class="divider">/</span></li>
+	    <li><a href="/admin/users">Users</a> <span class="divider">/</span></li>
+	</ul>
+
+	<form class="form-horizontal submit-only-changed" action="" method="POST">
+
+<form action="" id="mass-actions" method="post">
+    <table class="table table-hover">
+	<thead>
+	    <tr>
+		<th class="id">#</th>
+		<th class="username">Username</th>
+		<th class="email">Email</th>
+		<th class="group">Group</th>
+		<th class="check"><label><input type="checkbox" name="users[]" class="selectAll"></label></th>
+	    </tr>
+	</thead>
+	<tbody>
+
+	{% for user in bcms.users.all() %}
+	<tr>
+	    <td>{{ user.id }}</td>
+	    <td>{{ user.username }}</td>
+	    <td>{{ user.email }}</td>
+	    <td>{{ user.group }}</td>
+	    <td><input name="users[{{ link.id }}]" type="checkbox"></td>
+	</tr>
+	{% endfor %}
+	<tr>
+	    <td colspan="5">
+		<div class="btn-group pull-right">
+		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+		With selected
+		<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu">
+		    <li><a href="#!/delete_many">Delete</a></li>
+		    <li><a href="#!/block">Block</a></li>
+		    <li><a href="#">Something else here</a></li>
+		</ul>
+		</div>	
+	    </td>
+	</tr>
+	
+	</tbody>
+    </table>
+</form>
+	
+	
+	
+
+	<div class="form-actions">
+	    <button type="submit" class="btn btn-primary">Save</button>
+	    <a class="btn" href="/admin/users">Cancel</a>
+	</div>	
+	</form>
+    </div>
+     
+    <!-- Modal -->
+    <div id="add-form" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<form action="/admin/users/add" method="POST">
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	    <h3 id="myModalLabel">Add new user</h3>
+	</div>
+	<div class="modal-body">
+	    <input class="input-block-level" type="text" name="username" placeholder="username">
+	    <input class="input-block-level" type="text" name="password" placeholder="password">
+	    <input class="input-block-level" type="text" name="email" placeholder="email">
+	    <input class="input-block-level" type="text" name="group" placeholder="group">
+	    <input class="input-block-level" type="text" name="status" placeholder="status">
+	</div>
+	<div class="modal-footer">
+	<button type="submit" class="btn btn btn-primary">Save</button>
+	<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	</div>
+	</form>	
+    </div>    
+	
+{% endblock %}

@@ -7,17 +7,31 @@ $app->add(new \Slim\Middleware\SessionCookie($bcms['sessioncookie.config']));
 
 $authenticate = function ($app) {
     return function () use ($app) {
+
         if (!isset($_SESSION['user'])) {
             $_SESSION['urlRedirect'] = $app->request()->getPathInfo();
             $app->flash('error', 'Login required');
 
             // Get request object
-             $req = $app->request();
-             
-             //Get root URI
-             $rootUri = $req->getRootUri();
+            $req = $app->request();
+    
+            //Get resource URI
+            $resourceUri = $req->getResourceUri();
             
-            $app->redirect($rootUri.'/login');
+            //Get root URI
+            $rootUri = $req->getRootUri();            
+    
+            echo $resourceUri;
+    
+            $pattern = '/^\/admin/';
+            
+            preg_match($pattern, $resourceUri, $matches, PREG_OFFSET_CAPTURE);
+            print_r($matches);
+            
+            if(!empty($matches))
+            {
+                //$app->redirect($rootUri.'/login');                
+            }
         }
     };
 };

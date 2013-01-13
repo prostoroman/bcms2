@@ -29,13 +29,13 @@ $app->get('/admin/pages', $authenticate($bcms['app']), function () use ($bcms)
 // Add new page
 $app->get('/admin/pages/add', $authenticate($bcms['app']), function () use ($bcms)
 {
-        $bcms['title'] = 'Add new page';
-        $templates = array();
-        foreach (glob("../app/view/pages/*.twig") as $filename)
-        {
-            $templates[] = basename($filename);
-        }
-        $bcms['templates'] = $templates;
+    $bcms['title'] = 'Add new page';
+    $templates = array();
+    foreach (glob("../app/view/pages/*.twig") as $filename)
+    {
+        $templates[] = basename($filename);
+    }
+    $bcms['templates'] = $templates;
     
     $bcms['app']->render('admin/pages-edit.twig');
     
@@ -65,7 +65,7 @@ $app->post('/admin/pages/add', $authenticate($bcms['app']), function () use ($bc
         $page->name_page = $req->post('name_page');
         $page->redirect_url = $req->post('redirect_url');
         $page->order = $req->post('order') ? $req->post('order') : ORM::for_table('b_pages')->where('parent', $page->parent)->max('order');
-        $page->set_expr('date_created', 'NOW()');
+        $page->set_expr('date_created', "datetime('now')");
         $page->save();
         
         $bcms['PageController']->generateUrls($page->parent);
@@ -112,7 +112,7 @@ $app->post('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) 
         // Get request object
         $req = $bcms['app']->request();
 
-        if($page->parent !==$req->post('parent'))
+        if($page->parent !== $req->post('parent') && $req->post('parent'))
         {
             //$page->parent = $req->post('parent');
             $page->set('parent', $req->post('parent'));
@@ -131,11 +131,16 @@ $app->post('/admin/pages/edit/:id', $authenticate($bcms['app']), function ($id) 
             $page->order = $req->post('order');
             $bcms['PageController']->movePage($page->order, $page->parent);
         }
+
+        $page->set_expr('date_changed', "datetime('now')");        
         
         $page->save();
         
-        $bcms['PageController']->generateUrls($page->parent);
-        $bcms['PageController']->fixOrder($page->parent);
+        if($page->id > 0)
+        {
+            $bcms['PageController']->generateUrls($page->parent);
+            $bcms['PageController']->fixOrder($page->parent);
+        }
         
         $bcms['app']->flash('success', 'Success! Page is saved.');
     }
@@ -236,8 +241,10 @@ $app->get('(:parts+)', function ($parts) use ($bcms) {
     //$bcms['app']->lastModified(strtotime($bcms['page']->date_changed)); // or $app->etag('unique-id');
     //$bcms['app']->expires('+1 week');
     
+   
+    
     $template = $bcms['page']->template ? $bcms['page']->template : 'default.twig';
     
-    $bcms['app']->render('pages/'.$template, array('page' => $bcms['page']));
+    $bcms['app']->render('pages/'.$template, array('page' => $bcms['page'])); //, array('page' => $bcms['page'])
 
 });

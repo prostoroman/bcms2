@@ -54,7 +54,7 @@
 {% macro links(link, loopdata) %}
     {% set level = link.url | split('/') | length - 1 %}
     <tr>
-	<td><a rel="tooltip" title="Open page in new tab" data-placement="right" target="_blank" href="{{ link.url }}"><small><span class="iconfont muted">&#75;</span></small></a></td>
+	<td><a rel="tooltip" title="Open page in new tab" data-placement="right" target="_blank" href="{{ link.url }}"><small><i class="icon-">&#xf0c1;</i></small></a></td>
         <td class="level-{{ level }}">
             <a href="/admin/pages/edit/{{ link.id }}" rel="tooltip" data-placement="right" title="Click to edit">{{ link.name_menu }}</a>
         </td>

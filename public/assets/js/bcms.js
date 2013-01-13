@@ -1,3 +1,8 @@
+function MarkAsChanged()
+{
+    $(this).addClass("changed");
+}
+
 $().ready(function() {
 
     // Autohide alert messages
@@ -18,6 +23,13 @@ $().ready(function() {
     // popover demo
     $("a[rel=popover]").popover().click(function(e) {
       e.preventDefault()
+    });
+
+
+    $(".submit-only-changed :input").blur(MarkAsChanged).change(MarkAsChanged);
+
+    $('.submit-only-changed').submit(function() {
+        $(".submit-only-changed :input:not(.changed)").attr("disabled", "disabled");
     });
     
     $("#pages-list tr.pageRows").hover(function() {
