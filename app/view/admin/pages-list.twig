@@ -66,7 +66,7 @@
             {% if link.url != '/' %}
             <a class="btn btn-mini{% if loopdata.first %} disabled{% endif %}" title="#!/move_up/{{ link.id }}" href="/admin/pages/move/{{ link.id }}/up"><i class="icon-arrow-up"></i></a>
             <a class="btn btn-mini{% if loopdata.last %} disabled{% endif %}" title="#!/move_down/{{ link.id }}" href="/admin/pages/move/{{ link.id }}/down"><i class="icon-arrow-down"></i></a>
-            <a class="btn btn-danger btn-mini" href="/admin/pages/delete/{{ link.id }}"><i class="icon-trash icon-white"></i></a>
+            <a class="btn btn-danger btn-mini confirm" href="/admin/pages/delete/{{ link.id }}"><i class="icon-trash icon-white"></i></a>
             
             {% endif %}
         </td>

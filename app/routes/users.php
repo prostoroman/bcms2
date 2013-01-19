@@ -58,6 +58,42 @@ $app->post('/admin/users/add', $authenticate($bcms['app']), function () use ($bc
 
 });
 
+// Add option
+$app->get('/admin/users/edit/:id', $authenticate($bcms['app']), function ($id) use ($bcms)
+{
+
+    $user = $bcms['users']->get($id);
+  
+    $bcms['title'] = 'Edit user "' . $user->username . '"';
+    
+    $bcms['app']->render('admin/users-edit.twig', array('userdata' => $user));
+    
+})->name('users-edit');
+
+// Edit option
+$app->post('/admin/users/edit/:id', $authenticate($bcms['app']), function ($id) use ($bcms)
+{
+    // Get request object
+    $req = $bcms['app']->request();
+    $data = $req->post();
+    
+    if(!$req->post('username'))
+    {
+        $bcms['app']->flash('error', 'Username is required');
+    }
+    else
+    {
+        if(!$bcms['users']->edit($id, $data))
+        {
+            $bcms['app']->flash('error', 'Error!');
+        }
+        $bcms['app']->flash('success', 'User is edited.');
+    }
+    
+    $bcms['app']->redirect($bcms['app']->urlFor('users'));
+
+});
+
 $app->get('/admin/users/delete/:id', function ($id) use ($bcms) {
     $bcms['users']->delete($id);
     $bcms['app']->flash('success', 'User is deleted.');

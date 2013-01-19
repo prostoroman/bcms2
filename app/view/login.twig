@@ -8,7 +8,7 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 40px;
@@ -42,7 +42,7 @@
       }
 
     </style>
-    <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -50,11 +50,11 @@
     <![endif]-->
 
     <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="/assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="/assets/ico/favicon.png">
   </head>
 
   <body>
@@ -62,9 +62,6 @@
     <div class="container">
         <form class="form-signin" method="post" action="">
         <h2 class="form-signin-heading">Please sign in</h2>
-
-        <p class="small">(You will redirect to "{{ urlRedirect }}" upon login)</p>
-        <p class="small">Hint: roman@bs1.ru / 123</p>        
         {% if error %}
         <p class="error"> {{ error }}</p>
         {% endif %}
@@ -73,16 +70,16 @@
         
         <input type="text" class="input-block-level" name="email" value="{{ email_value }}" placeholder="Email address">
         <input type="password" class="input-block-level" name="password" placeholder="Password">
-        <label class="checkbox">
+        <!--label class="checkbox">
           <input type="checkbox" value="remember-me"> Remember me
-        </label>
+        </label-->
         <button class="btn btn-large btn-primary" type="submit">Sign in</button>
       </form>
 
     </div> <!-- /container -->
 
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="/bootstrap/js/bootstrap.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.js"></script>
 
   </body>
 </html>

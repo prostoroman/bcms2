@@ -1,0 +1,47 @@
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" id="bcms" rel="tooltip" title="Open site in new window" href="{{ bcms.app.urlFor('home') }}" target="_blank">bcms</a>
+	  
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="/admin/pages"><i class="icon-list-alt icon-white"></i> Pages</a></li>
+              <li><a href="/admin/news"><i class="icon-book icon-white"></i> News</a></li>	      
+              <li><a href="/admin/files"><i class="icon-folder-open icon-white"></i> Files</a></li>
+	      <li><a href="/admin/options"><i class="icon-wrench icon-white"></i> Options</a></li>
+	      <li><a href="/admin/users"><i class="icon-">&#xf0c0;</i> Users</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+		  <li><a href="{{ bcms.app.urlFor('home') }}"><i class="icon-globe"></i> Your site home</a></li>
+                  <li><a href="http://www.bcms.ru"><i class="icon-question-sign"></i> Help and Support</a></li>
+                  <li><a href="https://github.com/prostoroman/bcms2">Github project page</a></li>
+                  <li class="divider"></li>
+                  <li><a href="http://twitter.github.com/bootstrap/base-css.html" target="_blank">Twitter bootstrap</a></li>
+                  <li><a href="http://slimframework.com/">Slim Framework</a></li>
+                  <li><a href="http://pimple.sensiolabs.org/">Pimple</a></li>
+                </ul>
+              </li>
+	      
+            </ul>
+	    <ul class="nav pull-right">
+		<li class="dropdown">
+		  <a href="#" id="drop3" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> {{ user.username }} <b class="caret"></b></a>
+		    <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+			<li><a href="/admin/users/edit/{{ user.id }}">Edit my Profile</a></li>
+			<li><a href="#">Last login from</a></li>
+			<li class="divider"></li>
+			<li><a href="{{ bcms.app.urlFor('login') }}">Login</a></li>
+			<li><a href="{{ bcms.app.urlFor('logout') }}">Logout</a></li>
+		    </ul>
+		</li>
+	    </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>

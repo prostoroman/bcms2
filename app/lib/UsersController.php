@@ -20,19 +20,37 @@ class UsersController extends Controller
    {
       $user = ORM::for_table('b_users')->create();
       $user->username = $data['username'];
-      $user->password = $data['password'];
+      $user->password = bcrypt($data['password']);
       $user->email = $data['email'];
       $user->group = $data['group'];
       $user->status = $data['status'];
-      //$user->activation = $data['activation'];
+
       return $user->save();
    }
+
+   public function get($id)
+   {
+      if(!$id) return false;
+      $user = ORM::for_table('b_users')->find_one($id);
+      
+      return $user;
+   } 
  
    public function edit($id, $data)
    {
       if(!$id) return false;
       $user = ORM::for_table('b_users')->find_one($id);
-      $user->set($data);
+      //$user->set($data);
+
+      $user->username = $data['username'];
+      if(!empty($data['password']) && $data['password'] == $data['confitm_password'])
+      {
+         $user->password = bcrypt($data['password']);
+      }
+      
+      $user->email = $data['email'];
+      $user->group = $data['group'];
+      $user->status = $data['status'];      
       
       return $user->save();
    }
@@ -44,7 +62,9 @@ class UsersController extends Controller
 
    public function delete($id)
    {
-      $user = ORM::for_table('b_options')->find_one($id);
+      
+      $user = ORM::for_table('b_users')->find_one($id);
+      //print_r($user);
 
       return $user->delete();
    }

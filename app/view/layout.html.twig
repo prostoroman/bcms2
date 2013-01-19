@@ -54,7 +54,7 @@
 	
 	<h2>Meta</h2>
 	    {% block sidebar %}
-		    {% if user %}<h3>Hello, {{ user }}!</h3>{% endif %}
+		    {% if user %}<h3>Hello, {{ user.username }}!</h3>{% endif %}
 		    <ul>
 		    <li class="current"><a href="{{ bcms.app.urlFor('home') }}">Home</a></li>
 		    <li><a href="{{ bcms.app.urlFor('login') }}">Login</a></li></li>

@@ -30,7 +30,7 @@ $authenticate = function ($app) {
             
             if(!empty($matches))
             {
-                //$app->redirect($rootUri.'/login');                
+                $app->redirect($rootUri.'/login');         
             }
         }
     };
@@ -100,16 +100,25 @@ $app->get("/login", function () use ($app) {
 })->name('login');
 
 $app->post("/login", function () use ($app) {
+
     $email = $app->request()->post('email');
     $password = $app->request()->post('password');
-
     $passwordEncoded = bcrypt($password);
-   
+    
     $errors = array();
 
-    if ($email != "roman@bs1.ru") {
+    $user = ORM::for_table('b_users')->where('email', $email)->find_one();
+    
+    if(!$user)
+    {
         $errors['email'] = "Email is not found.";
-    } else if (!bcrypt_verify('123', $passwordEncoded)) {
+        $app->flash('errors', $errors);
+        $app->redirect($app->urlFor('login'));
+        
+    }
+    //echo $user->password . ' ' . $passwordEncoded . ' ' .$password;
+    if (!bcrypt_verify($password, $user->password))
+    {
         $app->flash('email', $email);
         $errors['password'] = "Password does not match.";
     }
@@ -119,7 +128,7 @@ $app->post("/login", function () use ($app) {
         $app->redirect($app->urlFor('login'));
     }
 
-    $_SESSION['user'] = $email;
+    $_SESSION['user'] = $user->as_array();
 
        // Get request object
     $req = $app->request();

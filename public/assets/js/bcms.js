@@ -25,7 +25,6 @@ $().ready(function() {
       e.preventDefault()
     });
 
-
     $(".submit-only-changed :input").blur(MarkAsChanged).change(MarkAsChanged);
 
     $('.submit-only-changed').submit(function() {
@@ -46,45 +45,14 @@ $().ready(function() {
         }
     });
 
-    function clearPanel(){
-        // You can put some code in here to do fancy DOM transitions, such as fade-out or slide-in.
-    }
-    
-    Path.map("#!/delete_many").to(function(){
-        $('#mass-actions').attr('action', '/admin/pages/delete_many');
-        window.location.href = "#";
-        $('#mass-actions').submit();
-    }).enter(clearPanel);
-
-    Path.map("#!/move_up/:id").to(function(){
-        
-        var id = this.params['id'];
-        
-        $('#row-' + id).insertBefore($('#row-' + id).prev());
-        
-        //alert("Move Up!" + this.params['id']);
-        window.location.href = "#";
-
-    }).enter(clearPanel);
-
-    Path.map("#!/move_down/:id").to(function(){
-        
-        var id = this.params['id'];
-        var elem = $('#row-' + id);
-        var level = elem.attr('data-level');
-        
-        alertMessage('test! ' + level, 'error');
-        
-        $('#row-' + id).insertAfter($('#row-' + id).next());
-        
-        //alert("Move Up!" + this.params['id']);
-        //window.location.href = "#";
-
-    }).enter(clearPanel);
-     
-    
-    Path.listen();
-
+    $('.confirm').click(function(e) {
+        if(!confirm('Please confirm this action.'))
+        {
+            e.preventDefault(); 
+        }
+           
+        //$(this).popover();
+    });
 });
 
 var alertMessage = function (text, type)
